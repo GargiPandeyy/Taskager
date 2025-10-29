@@ -49,10 +49,13 @@ function refresh(){
       const s=computeNewStreak(state.user.lastCompletionISO,now)
       const quests=(state.quests||[]).map(q=>q.type==='daily'&&!q.claimed?{...q,progress:Math.min(q.target,q.progress+1)}:q)
       const tasks=state.tasks.map(x=>x.id===id?{...x,status:'done',completedAt:now}:x)
+      const leveledUp=user.level>state.user.level
       const user2={...user,streakDays:state.user.streakDays+(s.streakDelta||0),lastCompletionISO:s.lastCompletionISO}
       const user3=evaluateBadges(user2,tasks)
       state={...state,user:user3,tasks,quests}
       store.write(state)
+      try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.type='triangle';o.frequency.value=660;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.2,ctx.currentTime+0.01);o.start();g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.2);o.stop(ctx.currentTime+0.22)}catch(e){}
+      if(leveledUp) alert('level up')
       refresh()
     }
   })
