@@ -18,7 +18,19 @@ export function render(root,state){
     el('div',{class:'bar'},[el('span',{style:`width:${Math.min(100,(state.user.xp/state.user.xpToNext)*100)}%`})])
   ])
 
+  const composer=el('form',{id:'create-form',class:'row',style:'gap:8px;flex-wrap:wrap'},[
+    el('input',{class:'input',name:'title',placeholder:'add a task...',style:'flex:1;min-width:240px'}),
+    el('select',{class:'input',name:'priority',style:'width:140px'},[
+      el('option',{value:'low'},['low']),
+      el('option',{value:'med',selected:''},['med']),
+      el('option',{value:'high'},['high'])
+    ]),
+    el('input',{class:'input',type:'number',name:'estimate',min:'1',value:'1',style:'width:100px'}),
+    el('button',{class:'btn',type:'submit'},['add'])
+  ])
+
   left.append(el('div',{class:'row'},[el('div',{class:'title'},['tasks'])]))
+  left.append(composer)
   left.append(el('div',{class:'list',id:'tasks-list'}))
 
   right.append(el('div',{class:'row'},[el('div',{class:'title'},['quests'])]))
