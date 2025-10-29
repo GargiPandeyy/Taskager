@@ -2,6 +2,17 @@ const el=(t,p={},c=[])=>{const e=document.createElement(t);Object.entries(p).for
 
 export function render(root,state){
   const container=el('div',{class:'container'})
+  if(!document.getElementById('scene')){
+    const scene=el('div',{id:'scene'})
+    const make=(cls,style)=>{const d=el('div',{class:cls,style});scene.append(d)}
+    make('orb pink',`left:5vw;top:10vh;width:220px;height:220px;animation-delay:0s`)
+    make('orb sky',`right:8vw;top:30vh;width:180px;height:180px;animation-delay:.5s`)
+    make('orb lime',`left:20vw;bottom:8vh;width:260px;height:260px;animation-delay:1s`)
+    for(let i=0;i<120;i++){const x=Math.random()*100;const y=Math.random()*100;const d=Math.random()*2;const a=(Math.random()*2.2)+'s';make('star',`left:${x}vw;top:${y}vh;width:${1+d}px;height:${1+d}px;animation-duration:${a}`)}
+    for(let i=0;i<4;i++){const top=10+Math.random()*60;const delay=(Math.random()*20)+'s';make('cloud',`top:${top}vh;left:-20vw;animation-delay:${delay}`)}
+    make('ufo',`top:20vh;left:10vw`)
+    document.body.append(scene)
+  }
   const header=el('div',{class:'row'},[
     el('div',{class:'brand'},['Taskager']),
   ])
