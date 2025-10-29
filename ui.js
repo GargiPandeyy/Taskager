@@ -44,3 +44,17 @@ export function render(root,state){
   root.replaceChildren(container)
 }
 
+export function renderTasks(listEl,tasks){
+  const items=tasks.map(t=>{
+    const row=el('div',{class:'task',"data-id":t.id},[
+      el('div',{class:'title'},[t.title]),
+      el('div',{class:'actions'},[
+        el('button',{class:'btn secondary action-complete',type:'button'},['done']),
+        el('button',{class:'btn secondary action-delete',type:'button'},['delete'])
+      ])
+    ])
+    return row
+  })
+  listEl.replaceChildren(...items)
+}
+
