@@ -2,15 +2,7 @@ const el=(t,p={},c=[])=>{const e=document.createElement(t);Object.entries(p).for
 
 export function render(root,state){
   const container=el('div',{class:'container'})
-  if(!document.getElementById('scene')){
-    const scene=el('div',{id:'scene'})
-    const make=(cls,style)=>{const d=el('div',{class:cls,style});scene.append(d)}
-    make('orb pink',`left:5vw;top:10vh;width:220px;height:220px;animation-delay:0s`)
-    make('orb sky',`right:8vw;top:30vh;width:180px;height:180px;animation-delay:.5s`)
-    make('orb lime',`left:20vw;bottom:8vh;width:260px;height:260px;animation-delay:1s`)
-    make('ufo',`top:22vh;left:8vw`)
-    document.body.append(scene)
-  }
+  
   const header=el('div',{class:'row'},[
     el('div',{class:'brand'},['Taskager']),
   ])
@@ -35,7 +27,7 @@ export function render(root,state){
     el('button',{class:'btn secondary',id:'toggle-sound'},[settingsState.sound?'sound on':'sound off']),
     el('button',{class:'btn secondary',id:'btn-export'},['export']),
     el('button',{class:'btn secondary',id:'btn-import'},['import']),
-    el('button',{class:'btn candy',id:'open-help'},['help'])
+    el('button',{class:'btn',id:'open-help'},['tutorial'])
   ])
   const filters=el('div',{class:'row',style:'gap:8px;flex-wrap:wrap'},[
     el('button',{class:'btn secondary filter-all',"data-filter":'all'},['all']),
@@ -52,7 +44,7 @@ export function render(root,state){
     ]),
     el('input',{class:'input',type:'number',name:'estimate',min:'1',value:'1',style:'width:100px'}),
     el('input',{class:'input',type:'date',name:'due',style:'width:160px'}),
-    el('button',{class:'btn candy',type:'submit',title:'add task'},['add'])
+    el('button',{class:'btn',type:'submit',title:'add task'},['add'])
   ])
 
   left.append(el('div',{class:'row'},[el('div',{class:'title'},['tasks'])]))
@@ -71,20 +63,19 @@ export function render(root,state){
       el('div',{class:'list',id:'badges-list'})
     ])
   ]))
-
   right.append(el('div',{id:'help-modal',style:'display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:50'},[
-    el('div',{class:'card',style:'max-width:700px;width:92%;max-height:82vh;overflow:auto'},[
+    el('div',{class:'card',style:'max-width:720px;width:92%;max-height:82vh;overflow:auto'},[
       el('div',{class:'row',style:'justify-content:space-between'},[
-        el('div',{class:'title'},['how to use taskager']),
+        el('div',{class:'title'},['how to play taskager']),
         el('button',{class:'btn secondary',id:'close-help'},['close'])
       ]),
       el('div',{class:'list'},[
-        el('div',{class:'task'},['add tasks with a title, priority, estimate and optional due date.']),
-        el('div',{class:'task'},['complete tasks to earn xp, coins and keep streaks.']),
-        el('div',{class:'task'},['claim daily and weekly quests when progress is full.']),
-        el('div',{class:'task'},['badges unlock automatically as you achieve milestones.']),
-        el('div',{class:'task'},['use theme, sound, export/import in settings.']),
-        el('div',{class:'task'},['drag tasks to reorder; use filters to view all/todo/done.'])
+        el('div',{class:'task'},['1. add a task: title + priority + estimate (and optional due date).']),
+        el('div',{class:'task'},['2. complete tasks to earn xp and coins. level up as the bar fills.']),
+        el('div',{class:'task'},['3. keep a daily streak by completing at least one task per day.']),
+        el('div',{class:'task'},['4. finish daily (3) and weekly (10) tasks, then press claim.']),
+        el('div',{class:'task'},['5. badges unlock automatically at milestones in the badges panel.']),
+        el('div',{class:'task'},['6. use filters, drag to reorder, and export/import to back up data.'])
       ])
     ])
   ]))
