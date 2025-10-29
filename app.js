@@ -84,6 +84,19 @@ function refresh(){
       refresh()
     }
   })
+  list.addEventListener('reorder',e=>{
+    const {from,to}=e.detail
+    const ids=state.tasks.map(t=>t.id)
+    const fromIdx=ids.indexOf(from)
+    const toIdx=ids.indexOf(to)
+    if(fromIdx<0||toIdx<0)return
+    const next=[...state.tasks]
+    const [moved]=next.splice(fromIdx,1)
+    next.splice(toIdx,0,moved)
+    state={...state,tasks:next}
+    store.write(state)
+    refresh()
+  })
   qlist.addEventListener('click',e=>{
     const btn=e.target.closest('button')
     if(!btn)return

@@ -72,7 +72,7 @@ export function render(root,state){
 
 export function renderTasks(listEl,tasks){
   const items=tasks.map(t=>{
-    const row=el('div',{class:'task',"data-id":t.id},[
+    const row=el('div',{class:'task',"data-id":t.id,draggable:'true'},[
       el('div',{},[
         el('div',{class:'title'},[t.title,' ',el('span',{class:`chip prio-${t.priority}`},[t.priority])]),
         el('div',{class:'muted'},[t.dueAt?`due ${t.dueAt}`:''])
@@ -86,6 +86,18 @@ export function renderTasks(listEl,tasks){
     return row
   })
   listEl.replaceChildren(...items)
+  let dragId=null
+  listEl.querySelectorAll('.task').forEach(row=>{
+    row.addEventListener('dragstart',e=>{dragId=row.getAttribute('data-id')})
+    row.addEventListener('dragover',e=>{e.preventDefault()})
+    row.addEventListener('drop',e=>{
+      e.preventDefault()
+      const targetId=row.getAttribute('data-id')
+      if(!dragId||dragId===targetId)return
+      const ev=new CustomEvent('reorder',{detail:{from:dragId,to:targetId}})
+      listEl.dispatchEvent(ev)
+    })
+  })
 }
 
 export function renderQuests(listEl,quests){
