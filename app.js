@@ -5,15 +5,22 @@ import { createTask, addTask, deleteTask, updateTask } from './models.js'
 import { calcTaskXp, gainXp, computeNewStreak, evaluateBadges } from './game.js'
 
 const existing = store.read()
-let state = Object.keys(existing).length ? existing : createInitialState()
+function normalize(raw){
+  const d=createInitialState()
+  const user={...d.user,...(raw.user||{})}
+  const settings={...d.settings,...(raw.settings||{})}
+  return { ...d, ...raw, user, settings, tasks:Array.isArray(raw.tasks)?raw.tasks:[], quests:Array.isArray(raw.quests)?raw.quests:[] }
+}
+let state = normalize(Object.keys(existing).length ? existing : createInitialState())
 store.write(state)
 
 const root = document.getElementById('app')
 function refresh(){
   render(root,state)
-  document.documentElement.setAttribute('data-theme',state.settings.theme==='light'?'light':'dark')
+  const theme=(state && state.settings && state.settings.theme)==='light'?'light':'dark'
+  document.documentElement.setAttribute('data-theme',theme)
   const list=document.getElementById('tasks-list')
-  const filter=(state.settings.filter)||'all'
+  const filter=((state.settings||{}).filter)||'all'
   const filtered=state.tasks.filter(t=>filter==='all'?true:filter==='done'?t.status==='done':t.status!=='done')
   renderTasks(list,filtered)
   const qlist=document.getElementById('quests-list')
@@ -125,7 +132,7 @@ function refresh(){
     const data=window.prompt('paste your data','')
     if(!data)return
     store.import(data)
-    state=store.read()
+    state=normalize(store.read())
     refresh()
   })
   btnTheme.addEventListener('click',()=>{
