@@ -4,7 +4,7 @@ export function createInitialState(){
   return {
     tasks: [],
     user: { level: 1, xp: 0, xpToNext: 60, streakDays: 0, lastCompletionISO: null, coins: 0, badges: [] },
-    settings: { theme: 'dark', sound: false, animations: true },
+    settings: { theme: 'dark', sound: false, animations: true, filter:'all' },
     quests: []
   }
 }
