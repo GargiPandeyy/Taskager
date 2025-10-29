@@ -58,3 +58,16 @@ export function renderTasks(listEl,tasks){
   listEl.replaceChildren(...items)
 }
 
+export function renderQuests(listEl,quests){
+  const items=quests.map(q=>{
+    const pct=Math.min(100,(q.progress/q.target)*100)
+    return el('div',{class:'task',"data-id":q.id},[
+      el('div',{},[`${q.type} ${q.progress}/${q.target}`]),
+      el('div',{class:'actions'},[
+        el('button',{class:'btn secondary action-claim',type:'button',disabled: q.progress<q.target || q.claimed? '': null},[q.claimed?'claimed':'claim'])
+      ])
+    ])
+  })
+  listEl.replaceChildren(...items)
+}
+

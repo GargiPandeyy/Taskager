@@ -1,6 +1,6 @@
 import { store } from './storage.js'
 import { createInitialState } from './models.js'
-import { render, renderTasks } from './ui.js'
+import { render, renderTasks, renderQuests } from './ui.js'
 import { createTask, addTask, deleteTask, updateTask } from './models.js'
 import { calcTaskXp, gainXp, computeNewStreak } from './game.js'
 
@@ -13,6 +13,8 @@ function refresh(){
   render(root,state)
   const list=document.getElementById('tasks-list')
   renderTasks(list,state.tasks)
+  const qlist=document.getElementById('quests-list')
+  renderQuests(qlist,state.quests||[])
   const form=document.getElementById('create-form')
   form.addEventListener('submit',e=>{
     e.preventDefault()
@@ -42,12 +44,42 @@ function refresh(){
       const user=gainXp(state.user,xp)
       const now=new Date().toISOString()
       const s=computeNewStreak(state.user.lastCompletionISO,now)
-      state={...state,user:{...user,streakDays:state.user.streakDays+(s.streakDelta||0),lastCompletionISO:s.lastCompletionISO},tasks:state.tasks.map(x=>x.id===id?{...x,status:'done',completedAt:now}:x)}
+      const quests=(state.quests||[]).map(q=>q.type==='daily'&&!q.claimed?{...q,progress:Math.min(q.target,q.progress+1)}:q)
+      state={...state,user:{...user,streakDays:state.user.streakDays+(s.streakDelta||0),lastCompletionISO:s.lastCompletionISO},tasks:state.tasks.map(x=>x.id===id?{...x,status:'done',completedAt:now}:x),quests}
       store.write(state)
       refresh()
+    }
+  })
+  qlist.addEventListener('click',e=>{
+    const btn=e.target.closest('button')
+    if(!btn)return
+    const row=e.target.closest('.task')
+    const id=row.getAttribute('data-id')
+    if(btn.classList.contains('action-claim')){
+      const q=(state.quests||[]).find(x=>x.id===id)
+      if(q && !q.claimed && q.progress>=q.target){
+        const user=gainXp(state.user,q.rewardXP)
+        const quests=(state.quests||[]).map(x=>x.id===id?{...x,claimed:true}:x)
+        state={...state,user,quests}
+        store.write(state)
+        refresh()
+      }
     }
   })
 }
 
 refresh()
+
+function ensureDailyQuest(){
+  const now=new Date()
+  const end=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)
+  const existing=(state.quests||[]).find(q=>q.id==='daily')
+  if(!existing || new Date(existing.expiresAtISO)<=now){
+    const q={id:'daily',type:'daily',target:3,progress:0,rewardXP:30,rewardCoins:0,expiresAtISO:end.toISOString(),claimed:false}
+    state={...state,quests:[q]}
+    store.write(state)
+  }
+}
+
+ensureDailyQuest()
 
