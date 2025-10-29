@@ -9,13 +9,14 @@ export function render(root,state){
   const left=el('div',{class:'card'})
   const right=el('div',{class:'card'})
 
+  const pct=Math.min(100,(state.user.xp/state.user.xpToNext)*100)
   const stats=el('div',{},[
     el('div',{class:'row'},[
       el('div',{class:'chip'},[`lv ${state.user.level}`]),
       el('div',{class:'muted'},[`xp ${state.user.xp}/${state.user.xpToNext}`]),
       el('div',{class:'chip'},[`streak ${state.user.streakDays}`])
     ]),
-    el('div',{class:'bar'},[el('span',{style:`width:${Math.min(100,(state.user.xp/state.user.xpToNext)*100)}%`})])
+    el('div',{class:'bar',role:'progressbar','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(pct)},[el('span',{style:`width:${pct}%`})])
   ])
   const settings=el('div',{class:'row',style:'gap:8px;flex-wrap:wrap'},[
     el('button',{class:'btn secondary',id:'toggle-theme'},[state.settings.theme==='dark'?'light':'dark']),
@@ -31,7 +32,7 @@ export function render(root,state){
       el('option',{value:'high'},['high'])
     ]),
     el('input',{class:'input',type:'number',name:'estimate',min:'1',value:'1',style:'width:100px'}),
-    el('button',{class:'btn',type:'submit'},['add'])
+    el('button',{class:'btn',type:'submit',title:'add task'},['add'])
   ])
 
   left.append(el('div',{class:'row'},[el('div',{class:'title'},['tasks'])]))
@@ -57,8 +58,8 @@ export function renderTasks(listEl,tasks){
     const row=el('div',{class:'task',"data-id":t.id},[
       el('div',{class:'title'},[t.title]),
       el('div',{class:'actions'},[
-        el('button',{class:'btn secondary action-complete',type:'button'},['done']),
-        el('button',{class:'btn secondary action-delete',type:'button'},['delete'])
+        el('button',{class:'btn secondary action-complete',type:'button',title:'complete task'},['done']),
+        el('button',{class:'btn secondary action-delete',type:'button',title:'delete task'},['delete'])
       ])
     ])
     return row
