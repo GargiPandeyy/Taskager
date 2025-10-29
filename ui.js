@@ -35,6 +35,8 @@ export function render(root,state){
 
   right.append(el('div',{class:'row'},[el('div',{class:'title'},['quests'])]))
   right.append(el('div',{class:'list',id:'quests-list'}))
+  right.append(el('div',{class:'row',style:'margin-top:8px'},[el('div',{class:'title'},['badges'])]))
+  right.append(el('div',{class:'list',id:'badges-list'}))
 
   grid.append(left)
   grid.append(right)
@@ -68,6 +70,11 @@ export function renderQuests(listEl,quests){
       ])
     ])
   })
+  listEl.replaceChildren(...items)
+}
+
+export function renderBadges(listEl,badges){
+  const items=(badges||[]).map(b=>el('div',{class:'task'},[b]))
   listEl.replaceChildren(...items)
 }
 

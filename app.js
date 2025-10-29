@@ -1,8 +1,8 @@
 import { store } from './storage.js'
 import { createInitialState } from './models.js'
-import { render, renderTasks, renderQuests } from './ui.js'
+import { render, renderTasks, renderQuests, renderBadges } from './ui.js'
 import { createTask, addTask, deleteTask, updateTask } from './models.js'
-import { calcTaskXp, gainXp, computeNewStreak } from './game.js'
+import { calcTaskXp, gainXp, computeNewStreak, evaluateBadges } from './game.js'
 
 const existing = store.read()
 let state = Object.keys(existing).length ? existing : createInitialState()
@@ -15,6 +15,8 @@ function refresh(){
   renderTasks(list,state.tasks)
   const qlist=document.getElementById('quests-list')
   renderQuests(qlist,state.quests||[])
+  const blist=document.getElementById('badges-list')
+  renderBadges(blist,state.user.badges||[])
   const form=document.getElementById('create-form')
   form.addEventListener('submit',e=>{
     e.preventDefault()
@@ -45,7 +47,10 @@ function refresh(){
       const now=new Date().toISOString()
       const s=computeNewStreak(state.user.lastCompletionISO,now)
       const quests=(state.quests||[]).map(q=>q.type==='daily'&&!q.claimed?{...q,progress:Math.min(q.target,q.progress+1)}:q)
-      state={...state,user:{...user,streakDays:state.user.streakDays+(s.streakDelta||0),lastCompletionISO:s.lastCompletionISO},tasks:state.tasks.map(x=>x.id===id?{...x,status:'done',completedAt:now}:x),quests}
+      const tasks=state.tasks.map(x=>x.id===id?{...x,status:'done',completedAt:now}:x)
+      const user2={...user,streakDays:state.user.streakDays+(s.streakDelta||0),lastCompletionISO:s.lastCompletionISO}
+      const user3=evaluateBadges(user2,tasks)
+      state={...state,user:user3,tasks,quests}
       store.write(state)
       refresh()
     }
