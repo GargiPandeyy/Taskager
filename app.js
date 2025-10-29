@@ -25,7 +25,8 @@ function refresh(){
     const task=createTask({
       title:fd.get('title'),
       priority:fd.get('priority'),
-      estimatePomodoros:fd.get('estimate')
+      estimatePomodoros:fd.get('estimate'),
+      dueAt:fd.get('due')||null
     })
     state=addTask(state,task)
     store.write(state)

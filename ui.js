@@ -32,6 +32,7 @@ export function render(root,state){
       el('option',{value:'high'},['high'])
     ]),
     el('input',{class:'input',type:'number',name:'estimate',min:'1',value:'1',style:'width:100px'}),
+    el('input',{class:'input',type:'date',name:'due',style:'width:160px'}),
     el('button',{class:'btn',type:'submit',title:'add task'},['add'])
   ])
 
