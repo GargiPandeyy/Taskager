@@ -14,12 +14,14 @@ export function render(root,state){
     el('div',{class:'row'},[
       el('div',{class:'chip'},[`lv ${state.user.level}`]),
       el('div',{class:'muted'},[`xp ${state.user.xp}/${state.user.xpToNext}`]),
-      el('div',{class:'chip'},[`streak ${state.user.streakDays}`])
+      el('div',{class:'chip'},[`streak ${state.user.streakDays}`]),
+      el('div',{class:'chip'},[`coins ${state.user.coins||0}`])
     ]),
     el('div',{class:'bar',role:'progressbar','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(pct)},[el('span',{style:`width:${pct}%`})])
   ])
   const settings=el('div',{class:'row',style:'gap:8px;flex-wrap:wrap'},[
     el('button',{class:'btn secondary',id:'toggle-theme'},[state.settings.theme==='dark'?'light':'dark']),
+    el('button',{class:'btn secondary',id:'toggle-sound'},[state.settings.sound?'sound on':'sound off']),
     el('button',{class:'btn secondary',id:'btn-export'},['export']),
     el('button',{class:'btn secondary',id:'btn-import'},['import'])
   ])
@@ -47,8 +49,16 @@ export function render(root,state){
 
   right.append(el('div',{class:'row'},[el('div',{class:'title'},['quests'])]))
   right.append(el('div',{class:'list',id:'quests-list'}))
-  right.append(el('div',{class:'row',style:'margin-top:8px'},[el('div',{class:'title'},['badges'])]))
-  right.append(el('div',{class:'list',id:'badges-list'}))
+  right.append(el('div',{class:'row',style:'margin-top:8px'},[el('button',{class:'btn secondary',id:'open-badges'},['badges'])]))
+  right.append(el('div',{id:'badges-modal',style:'display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:50'},[
+    el('div',{class:'card',style:'max-width:600px;width:90%;max-height:80vh;overflow:auto'},[
+      el('div',{class:'row',style:'justify-content:space-between'},[
+        el('div',{class:'title'},['badges']),
+        el('button',{class:'btn secondary',id:'close-badges'},['close'])
+      ]),
+      el('div',{class:'list',id:'badges-list'})
+    ])
+  ]))
 
   grid.append(left)
   grid.append(right)

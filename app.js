@@ -20,6 +20,11 @@ function refresh(){
   renderQuests(qlist,state.quests||[])
   const blist=document.getElementById('badges-list')
   renderBadges(blist,state.user.badges||[])
+  const badgesModal=document.getElementById('badges-modal')
+  const openBadges=document.getElementById('open-badges')
+  const closeBadges=document.getElementById('close-badges')
+  openBadges&&openBadges.addEventListener('click',()=>{badgesModal.style.display='flex'})
+  closeBadges&&closeBadges.addEventListener('click',()=>{badgesModal.style.display='none'})
   const form=document.getElementById('create-form')
   form.addEventListener('submit',e=>{
     e.preventDefault()
@@ -68,9 +73,13 @@ function refresh(){
       const leveledUp=user.level>state.user.level
       const user2={...user,streakDays:state.user.streakDays+(s.streakDelta||0),lastCompletionISO:s.lastCompletionISO}
       const user3=evaluateBadges(user2,tasks)
-      state={...state,user:user3,tasks,quests}
+      const coinsGain=5
+      state={...state,user:{...user3,coins:(user3.coins||0)+coinsGain},tasks,quests}
       store.write(state)
-      try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.type='triangle';o.frequency.value=660;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.2,ctx.currentTime+0.01);o.start();g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.2);o.stop(ctx.currentTime+0.22)}catch(e){}
+      if(state.settings.sound){
+        try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.type='triangle';o.frequency.value=660;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.2,ctx.currentTime+0.01);o.start();g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.2);o.stop(ctx.currentTime+0.22)}catch(e){}
+      }
+      confetti()
       if(leveledUp) alert('level up')
       refresh()
     }
@@ -85,7 +94,7 @@ function refresh(){
       if(q && !q.claimed && q.progress>=q.target){
         const user=gainXp(state.user,q.rewardXP)
         const quests=(state.quests||[]).map(x=>x.id===id?{...x,claimed:true}:x)
-        state={...state,user,quests}
+        state={...state,user:{...user,coins:(user.coins||0)+(q.rewardCoins||0)},quests}
         store.write(state)
         refresh()
       }
@@ -94,6 +103,7 @@ function refresh(){
   const btnExport=document.getElementById('btn-export')
   const btnImport=document.getElementById('btn-import')
   const btnTheme=document.getElementById('toggle-theme')
+  const btnSound=document.getElementById('toggle-sound')
   btnExport.addEventListener('click',()=>{
     const data=store.export()
     window.prompt('copy your data',data)
@@ -107,6 +117,11 @@ function refresh(){
   })
   btnTheme.addEventListener('click',()=>{
     state={...state,settings:{...state.settings,theme: state.settings.theme==='dark'?'light':'dark'}}
+    store.write(state)
+    refresh()
+  })
+  btnSound&&btnSound.addEventListener('click',()=>{
+    state={...state,settings:{...state.settings,sound: !state.settings.sound}}
     store.write(state)
     refresh()
   })
@@ -149,4 +164,25 @@ function ensureWeeklyQuest(){
 }
 
 ensureWeeklyQuest()
+
+function confetti(){
+  const c=document.createElement('canvas')
+  c.width=window.innerWidth
+  c.height=window.innerHeight
+  c.style.position='fixed'
+  c.style.inset='0'
+  c.style.pointerEvents='none'
+  c.style.zIndex='60'
+  document.body.appendChild(c)
+  const ctx=c.getContext('2d')
+  const parts=Array.from({length:80}).map(()=>({x:Math.random()*c.width,y:-20-Math.random()*100,r:3+Math.random()*5,vy:2+Math.random()*3,vx:(Math.random()-.5)*2,color:`hsl(${Math.floor(Math.random()*360)},90%,60%)`,rot:Math.random()*Math.PI}))
+  let t=0
+  const step=()=>{
+    ctx.clearRect(0,0,c.width,c.height)
+    parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=0.1;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.color;ctx.fillRect(-p.r,-p.r,p.r*2,p.r*2);ctx.restore()})
+    t++
+    if(t<120) requestAnimationFrame(step); else c.remove()
+  }
+  requestAnimationFrame(step)
+}
 

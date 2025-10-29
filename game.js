@@ -8,8 +8,13 @@ export function computeNewStreak(lastISO,nowISO){const now=new Date(nowISO);cons
 export function evaluateBadges(user,tasks){
   const have=new Set(user.badges||[])
   const done=tasks.filter(t=>t.status==='done').length
+  const doneHigh=tasks.filter(t=>t.status==='done'&&t.priority==='high').length
+  const totalPomos=tasks.filter(t=>t.status==='done').reduce((a,t)=>a+Number(t.estimatePomodoros||0),0)
   const add=[]
   if(done>=1 && !have.has('first-blood')) add.push('first-blood')
+  if(user.streakDays>=7 && !have.has('on-a-roll')) add.push('on-a-roll')
+  if(doneHigh>=20 && !have.has('high-roller')) add.push('high-roller')
+  if(totalPomos>=100 && !have.has('marathon')) add.push('marathon')
   return add.length?{...user,badges:[...user.badges,...add]}:user
 }
 
