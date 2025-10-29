@@ -9,19 +9,21 @@ export function render(root,state){
   const left=el('div',{class:'card'})
   const right=el('div',{class:'card'})
 
-  const pct=Math.min(100,(state.user.xp/state.user.xpToNext)*100)
+  const user=state.user||{level:1,xp:0,xpToNext:60,streakDays:0,coins:0}
+  const settingsState=state.settings||{theme:'dark',sound:false}
+  const pct=Math.min(100,((user.xp/Math.max(1,user.xpToNext))*100))
   const stats=el('div',{},[
     el('div',{class:'row'},[
-      el('div',{class:'chip'},[`lv ${state.user.level}`]),
-      el('div',{class:'muted'},[`xp ${state.user.xp}/${state.user.xpToNext}`]),
-      el('div',{class:'chip'},[`streak ${state.user.streakDays}`]),
-      el('div',{class:'chip'},[`coins ${state.user.coins||0}`])
+      el('div',{class:'chip'},[`lv ${user.level}`]),
+      el('div',{class:'muted'},[`xp ${user.xp}/${user.xpToNext}`]),
+      el('div',{class:'chip'},[`streak ${user.streakDays}`]),
+      el('div',{class:'chip'},[`coins ${user.coins||0}`])
     ]),
     el('div',{class:'bar',role:'progressbar','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(pct)},[el('span',{style:`width:${pct}%`})])
   ])
   const settings=el('div',{class:'row',style:'gap:8px;flex-wrap:wrap'},[
-    el('button',{class:'btn secondary',id:'toggle-theme'},[state.settings.theme==='dark'?'light':'dark']),
-    el('button',{class:'btn secondary',id:'toggle-sound'},[state.settings.sound?'sound on':'sound off']),
+    el('button',{class:'btn secondary',id:'toggle-theme'},[settingsState.theme==='dark'?'light':'dark']),
+    el('button',{class:'btn secondary',id:'toggle-sound'},[settingsState.sound?'sound on':'sound off']),
     el('button',{class:'btn secondary',id:'btn-export'},['export']),
     el('button',{class:'btn secondary',id:'btn-import'},['import'])
   ])
