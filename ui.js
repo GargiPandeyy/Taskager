@@ -64,8 +64,8 @@ export function renderTasks(listEl,tasks){
   const items=tasks.map(t=>{
     const row=el('div',{class:'task',"data-id":t.id},[
       el('div',{},[
-        el('div',{class:'title'},[t.title]),
-        el('div',{class:'muted'},[`prio: ${t.priority}${t.dueAt?` • due ${t.dueAt}`:''}`])
+        el('div',{class:'title'},[t.title,' ',el('span',{class:`chip prio-${t.priority}`},[t.priority])]),
+        el('div',{class:'muted'},[t.dueAt?`due ${t.dueAt}`:''])
       ]),
       el('div',{class:'actions'},[
         el('button',{class:'btn secondary action-edit',type:'button'},['edit']),

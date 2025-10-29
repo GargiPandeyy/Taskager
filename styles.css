@@ -12,6 +12,9 @@ body{margin:0;background:linear-gradient(180deg,#0b0f19 0%,#0a0f1f 60%,#0b0f19 1
 .row{display:flex;align-items:center;gap:12px}
 .muted{color:var(--muted)}
 .chip{padding:4px 10px;border-radius:999px;border:1px solid #30323a;color:#cbd5e1}
+.chip.prio-low{border-color:#1c3d2b;color:#86efac}
+.chip.prio-med{border-color:#3a2b1c;color:#facc15}
+.chip.prio-high{border-color:#3d1c1c;color:#fca5a5}
 .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #30323a;background:#0b1220;color:#e5e7eb}
 .btn{appearance:none;border:0;border-radius:10px;background:var(--accent);color:white;padding:10px 14px;font-weight:600;cursor:pointer}
 .btn.secondary{background:#1f2937}
