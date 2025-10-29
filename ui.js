@@ -23,6 +23,11 @@ export function render(root,state){
     el('button',{class:'btn secondary',id:'btn-export'},['export']),
     el('button',{class:'btn secondary',id:'btn-import'},['import'])
   ])
+  const filters=el('div',{class:'row',style:'gap:8px;flex-wrap:wrap'},[
+    el('button',{class:'btn secondary filter-all',"data-filter":'all'},['all']),
+    el('button',{class:'btn secondary filter-todo',"data-filter":'todo'},['todo']),
+    el('button',{class:'btn secondary filter-done',"data-filter":'done'},['done'])
+  ])
 
   const composer=el('form',{id:'create-form',class:'row',style:'gap:8px;flex-wrap:wrap'},[
     el('input',{class:'input',name:'title',placeholder:'add a task...',style:'flex:1;min-width:240px'}),
@@ -50,6 +55,7 @@ export function render(root,state){
   container.append(header)
   container.append(el('div',{class:'card'},[stats]))
   container.append(el('div',{class:'card'},[settings]))
+  container.append(el('div',{class:'card'},[filters]))
   container.append(grid)
   root.replaceChildren(container)
 }

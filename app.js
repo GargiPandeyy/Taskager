@@ -13,7 +13,9 @@ function refresh(){
   render(root,state)
   document.documentElement.setAttribute('data-theme',state.settings.theme==='light'?'light':'dark')
   const list=document.getElementById('tasks-list')
-  renderTasks(list,state.tasks)
+  const filter=(state.settings.filter)||'all'
+  const filtered=state.tasks.filter(t=>filter==='all'?true:filter==='done'?t.status==='done':t.status!=='done')
+  renderTasks(list,filtered)
   const qlist=document.getElementById('quests-list')
   renderQuests(qlist,state.quests||[])
   const blist=document.getElementById('badges-list')
@@ -107,6 +109,13 @@ function refresh(){
     state={...state,settings:{...state.settings,theme: state.settings.theme==='dark'?'light':'dark'}}
     store.write(state)
     refresh()
+  })
+  document.querySelectorAll('[data-filter]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      state={...state,settings:{...state.settings,filter:b.getAttribute('data-filter')}}
+      store.write(state)
+      refresh()
+    })
   })
 }
 
