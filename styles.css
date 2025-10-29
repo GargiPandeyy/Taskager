@@ -1,8 +1,8 @@
-:root{--bg:#06080f;--panel:#0f1322;--muted:#8b94a7;--text:#f3f4f6;--accent:#a855f7;--accent-2:#22d3ee;--success:#16a34a;--warn:#f59e0b;--danger:#ef4444;--pink:#ec4899;--lime:#84cc16;--sky:#38bdf8}
-:root[data-theme="light"]{--bg:#f8fafc;--panel:#ffffff;--muted:#64748b;--text:#0f172a;--accent:#a855f7;--accent-2:#06b6d4;--pink:#db2777;--lime:#65a30d;--sky:#0ea5e9}
+:root{--bg:#0b0a13;--panel:#121223;--muted:#9aa3b2;--text:#fff9fb;--accent:#ff7ad9;--accent-2:#6ee7ff;--success:#22c55e;--warn:#f59e0b;--danger:#ef4444;--pink:#ff7ad9;--lime:#b3ff5a;--sky:#6ee7ff}
+:root[data-theme="light"]{--bg:#fff5fb;--panel:#ffffff;--muted:#667085;--text:#0f172a;--accent:#ff7ad9;--accent-2:#22d3ee;--pink:#ff7ad9;--lime:#86efac;--sky:#67e8f9}
 *{box-sizing:border-box}
 html,body,#app{height:100%}
-body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,rgba(168,85,247,.35),transparent),radial-gradient(1000px 500px at 110% 30%,rgba(34,211,238,.25),transparent),radial-gradient(900px 500px at -10% 90%,rgba(236,72,153,.2),transparent),linear-gradient(180deg,#070a15 0%,#090e1d 60%,#070a15 100%);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,rgba(255,122,217,.35),transparent),radial-gradient(1000px 500px at 110% 30%,rgba(110,231,255,.25),transparent),radial-gradient(900px 500px at -10% 90%,rgba(255,122,217,.2),transparent),linear-gradient(180deg,#0b0a13 0%,#0f1022 60%,#0b0a13 100%);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
 .container{max-width:1100px;margin:0 auto;padding:20px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px}
 .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
@@ -16,27 +16,25 @@ body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,rgba(168,85,24
 .chip.prio-med{border-color:#3a2b1c;color:#facc15}
 .chip.prio-high{border-color:#3d1c1c;color:#fca5a5}
 .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #30323a;background:#0b1220;color:#e5e7eb}
-.btn{appearance:none;border:0;border-radius:10px;background:var(--accent);color:white;padding:10px 14px;font-weight:600;cursor:pointer}
+.btn{appearance:none;border:0;border-radius:16px;background:var(--panel);color:white;padding:10px 16px;font-weight:700;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.25);border:1px solid rgba(255,122,217,.2)}
+.btn.candy{background:linear-gradient(90deg,var(--sky),var(--pink));color:#0b0a13}
 .btn.secondary{background:#1f2937}
 .list{display:flex;flex-direction:column;gap:10px}
-.task{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid #2a2d36;border-radius:12px;background:#0d1424}
+.task{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid rgba(255,122,217,.18);border-radius:14px;background:linear-gradient(180deg,rgba(18,18,35,.9),rgba(18,18,35,.78));box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .title{font-weight:600}
 .actions{display:flex;gap:8px}
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
 
 #scene{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.orb{position:absolute;border-radius:50%;filter:blur(2px);opacity:.6;animation:float 12s ease-in-out infinite}
+.orb{position:absolute;border-radius:9999px;filter:blur(2px);opacity:.7;animation:float 10s ease-in-out infinite}
 .orb.pink{background:radial-gradient(circle at 30% 30%,rgba(236,72,153,.8),rgba(236,72,153,.15));}
 .orb.sky{background:radial-gradient(circle at 40% 40%,rgba(56,189,248,.8),rgba(56,189,248,.12));}
 .orb.lime{background:radial-gradient(circle at 60% 60%,rgba(132,204,22,.8),rgba(132,204,22,.12));}
-.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.8;animation:twinkle 2.2s ease-in-out infinite}
-.cloud{position:absolute;width:180px;height:70px;background:radial-gradient(circle at 20% 50%,#fff,rgba(255,255,255,.9) 40%,rgba(255,255,255,.7) 60%,transparent 70%);filter:blur(1px);opacity:.7;animation:drift 40s linear infinite}
-.ufo{position:absolute;width:90px;height:40px;border-radius:20px;background:linear-gradient(90deg,var(--sky),var(--pink));box-shadow:0 10px 20px rgba(56,189,248,.25);animation:zigzag 12s ease-in-out infinite}
+.ufo{position:absolute;width:110px;height:46px;border-radius:999px;background:linear-gradient(90deg,var(--sky),var(--pink));box-shadow:0 10px 28px rgba(110,231,255,.35),0 0 0 6px rgba(255,122,217,.08) inset;animation:zigzag 14s ease-in-out infinite}
 .ufo:after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);width:26px;height:6px;background:radial-gradient(ellipse at center,rgba(250,250,250,.7),rgba(250,250,250,0));border-radius:50%}
 
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
 @keyframes shine{0%{background-position:0% 50%}100%{background-position:200% 50%}}
-@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.9}}
-@keyframes drift{0%{transform:translateX(-20vw)}100%{transform:translateX(120vw)}}
+/* removed stars/clouds */
 @keyframes zigzag{0%{transform:translate(0,0) rotate(-2deg)}25%{transform:translate(10vw,-2vh) rotate(3deg)}50%{transform:translate(20vw,1vh) rotate(-4deg)}75%{transform:translate(30vw,-1vh) rotate(2deg)}100%{transform:translate(40vw,0) rotate(-2deg)}}
 

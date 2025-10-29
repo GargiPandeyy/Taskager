@@ -32,6 +32,11 @@ function refresh(){
   const closeBadges=document.getElementById('close-badges')
   openBadges&&openBadges.addEventListener('click',()=>{badgesModal.style.display='flex'})
   closeBadges&&closeBadges.addEventListener('click',()=>{badgesModal.style.display='none'})
+  const helpModal=document.getElementById('help-modal')
+  const openHelp=document.getElementById('open-help')
+  const closeHelp=document.getElementById('close-help')
+  openHelp&&openHelp.addEventListener('click',()=>{helpModal.style.display='flex'})
+  closeHelp&&closeHelp.addEventListener('click',()=>{helpModal.style.display='none'})
   const form=document.getElementById('create-form')
   form.addEventListener('submit',e=>{
     e.preventDefault()

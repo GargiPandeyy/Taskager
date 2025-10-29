@@ -8,9 +8,7 @@ export function render(root,state){
     make('orb pink',`left:5vw;top:10vh;width:220px;height:220px;animation-delay:0s`)
     make('orb sky',`right:8vw;top:30vh;width:180px;height:180px;animation-delay:.5s`)
     make('orb lime',`left:20vw;bottom:8vh;width:260px;height:260px;animation-delay:1s`)
-    for(let i=0;i<120;i++){const x=Math.random()*100;const y=Math.random()*100;const d=Math.random()*2;const a=(Math.random()*2.2)+'s';make('star',`left:${x}vw;top:${y}vh;width:${1+d}px;height:${1+d}px;animation-duration:${a}`)}
-    for(let i=0;i<4;i++){const top=10+Math.random()*60;const delay=(Math.random()*20)+'s';make('cloud',`top:${top}vh;left:-20vw;animation-delay:${delay}`)}
-    make('ufo',`top:20vh;left:10vw`)
+    make('ufo',`top:22vh;left:8vw`)
     document.body.append(scene)
   }
   const header=el('div',{class:'row'},[
@@ -36,7 +34,8 @@ export function render(root,state){
     el('button',{class:'btn secondary',id:'toggle-theme'},[settingsState.theme==='dark'?'light':'dark']),
     el('button',{class:'btn secondary',id:'toggle-sound'},[settingsState.sound?'sound on':'sound off']),
     el('button',{class:'btn secondary',id:'btn-export'},['export']),
-    el('button',{class:'btn secondary',id:'btn-import'},['import'])
+    el('button',{class:'btn secondary',id:'btn-import'},['import']),
+    el('button',{class:'btn candy',id:'open-help'},['help'])
   ])
   const filters=el('div',{class:'row',style:'gap:8px;flex-wrap:wrap'},[
     el('button',{class:'btn secondary filter-all',"data-filter":'all'},['all']),
@@ -53,7 +52,7 @@ export function render(root,state){
     ]),
     el('input',{class:'input',type:'number',name:'estimate',min:'1',value:'1',style:'width:100px'}),
     el('input',{class:'input',type:'date',name:'due',style:'width:160px'}),
-    el('button',{class:'btn',type:'submit',title:'add task'},['add'])
+    el('button',{class:'btn candy',type:'submit',title:'add task'},['add'])
   ])
 
   left.append(el('div',{class:'row'},[el('div',{class:'title'},['tasks'])]))
@@ -70,6 +69,23 @@ export function render(root,state){
         el('button',{class:'btn secondary',id:'close-badges'},['close'])
       ]),
       el('div',{class:'list',id:'badges-list'})
+    ])
+  ]))
+
+  right.append(el('div',{id:'help-modal',style:'display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:50'},[
+    el('div',{class:'card',style:'max-width:700px;width:92%;max-height:82vh;overflow:auto'},[
+      el('div',{class:'row',style:'justify-content:space-between'},[
+        el('div',{class:'title'},['how to use taskager']),
+        el('button',{class:'btn secondary',id:'close-help'},['close'])
+      ]),
+      el('div',{class:'list'},[
+        el('div',{class:'task'},['add tasks with a title, priority, estimate and optional due date.']),
+        el('div',{class:'task'},['complete tasks to earn xp, coins and keep streaks.']),
+        el('div',{class:'task'},['claim daily and weekly quests when progress is full.']),
+        el('div',{class:'task'},['badges unlock automatically as you achieve milestones.']),
+        el('div',{class:'task'},['use theme, sound, export/import in settings.']),
+        el('div',{class:'task'},['drag tasks to reorder; use filters to view all/todo/done.'])
+      ])
     ])
   ]))
 
