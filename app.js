@@ -11,6 +11,7 @@ store.write(state)
 const root = document.getElementById('app')
 function refresh(){
   render(root,state)
+  document.documentElement.setAttribute('data-theme',state.settings.theme==='light'?'light':'dark')
   const list=document.getElementById('tasks-list')
   renderTasks(list,state.tasks)
   const qlist=document.getElementById('quests-list')
@@ -70,6 +71,25 @@ function refresh(){
         refresh()
       }
     }
+  })
+  const btnExport=document.getElementById('btn-export')
+  const btnImport=document.getElementById('btn-import')
+  const btnTheme=document.getElementById('toggle-theme')
+  btnExport.addEventListener('click',()=>{
+    const data=store.export()
+    window.prompt('copy your data',data)
+  })
+  btnImport.addEventListener('click',()=>{
+    const data=window.prompt('paste your data','')
+    if(!data)return
+    store.import(data)
+    state=store.read()
+    refresh()
+  })
+  btnTheme.addEventListener('click',()=>{
+    state={...state,settings:{...state.settings,theme: state.settings.theme==='dark'?'light':'dark'}}
+    store.write(state)
+    refresh()
   })
 }
 

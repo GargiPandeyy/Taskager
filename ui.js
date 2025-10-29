@@ -17,6 +17,11 @@ export function render(root,state){
     ]),
     el('div',{class:'bar'},[el('span',{style:`width:${Math.min(100,(state.user.xp/state.user.xpToNext)*100)}%`})])
   ])
+  const settings=el('div',{class:'row',style:'gap:8px;flex-wrap:wrap'},[
+    el('button',{class:'btn secondary',id:'toggle-theme'},[state.settings.theme==='dark'?'light':'dark']),
+    el('button',{class:'btn secondary',id:'btn-export'},['export']),
+    el('button',{class:'btn secondary',id:'btn-import'},['import'])
+  ])
 
   const composer=el('form',{id:'create-form',class:'row',style:'gap:8px;flex-wrap:wrap'},[
     el('input',{class:'input',name:'title',placeholder:'add a task...',style:'flex:1;min-width:240px'}),
@@ -42,6 +47,7 @@ export function render(root,state){
   grid.append(right)
   container.append(header)
   container.append(el('div',{class:'card'},[stats]))
+  container.append(el('div',{class:'card'},[settings]))
   container.append(grid)
   root.replaceChildren(container)
 }

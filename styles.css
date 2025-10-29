@@ -1,4 +1,5 @@
 :root{--bg:#0b0f19;--panel:#111827;--muted:#6b7280;--text:#e5e7eb;--accent:#7c3aed;--accent-2:#22d3ee;--success:#16a34a;--warn:#f59e0b;--danger:#ef4444}
+:root[data-theme="light"]{--bg:#f7fafc;--panel:#ffffff;--muted:#64748b;--text:#0f172a;--accent:#7c3aed;--accent-2:#06b6d4}
 *{box-sizing:border-box}
 html,body,#app{height:100%}
 body{margin:0;background:linear-gradient(180deg,#0b0f19 0%,#0a0f1f 60%,#0b0f19 100%);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
