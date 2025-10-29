@@ -41,13 +41,26 @@ function refresh(){
       store.write(state)
       refresh()
     }
+    if(btn.classList.contains('action-edit')){
+      const t=state.tasks.find(x=>x.id===id)
+      const title=window.prompt('edit title',t.title)
+      if(!title)return
+      const pri=window.prompt('priority low|med|high',t.priority)||t.priority
+      state=updateTask(state,id,{title,priority:pri})
+      store.write(state)
+      refresh()
+    }
     if(btn.classList.contains('action-complete')){
       const t=state.tasks.find(x=>x.id===id)
       const xp=calcTaskXp(t.priority,t.estimatePomodoros,state.user.streakDays)
       const user=gainXp(state.user,xp)
       const now=new Date().toISOString()
       const s=computeNewStreak(state.user.lastCompletionISO,now)
-      const quests=(state.quests||[]).map(q=>q.type==='daily'&&!q.claimed?{...q,progress:Math.min(q.target,q.progress+1)}:q)
+      const quests=(state.quests||[]).map(q=>{
+        if(q.claimed)return q
+        if(q.type==='daily' || q.type==='weekly') return {...q,progress:Math.min(q.target,q.progress+1)}
+        return q
+      })
       const tasks=state.tasks.map(x=>x.id===id?{...x,status:'done',completedAt:now}:x)
       const leveledUp=user.level>state.user.level
       const user2={...user,streakDays:state.user.streakDays+(s.streakDelta||0),lastCompletionISO:s.lastCompletionISO}
@@ -110,4 +123,20 @@ function ensureDailyQuest(){
 }
 
 ensureDailyQuest()
+
+function ensureWeeklyQuest(){
+  const now=new Date()
+  const day=now.getDay()
+  const diff=(7-day)%7
+  const end=new Date(now.getFullYear(),now.getMonth(),now.getDate()+diff,23,59,59,999)
+  const existing=(state.quests||[]).find(q=>q.id==='weekly')
+  if(!existing || new Date(existing.expiresAtISO)<=now){
+    const q={id:'weekly',type:'weekly',target:10,progress:0,rewardXP:120,rewardCoins:0,expiresAtISO:end.toISOString(),claimed:false}
+    const others=(state.quests||[]).filter(q=>q.id!=='weekly')
+    state={...state,quests:[...others,q]}
+    store.write(state)
+  }
+}
+
+ensureWeeklyQuest()
 
