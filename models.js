@@ -23,3 +23,15 @@ export function createTask(input){
   }
 }
 
+export function addTask(state,task){
+  return { ...state, tasks:[task,...state.tasks] }
+}
+
+export function updateTask(state,id,patch){
+  return { ...state, tasks: state.tasks.map(t=>t.id===id?{...t,...patch}:t) }
+}
+
+export function deleteTask(state,id){
+  return { ...state, tasks: state.tasks.filter(t=>t.id!==id) }
+}
+
